@@ -1,130 +1,132 @@
 [
-  {
-    "id": "island-sos-001",
-    "full": "The first thing to do if stranded on a desert island is to write “HELP” or “SOS” in 10-meter letters using rocks, seaweed or by digging trenches. Visible from planes 20 km away.",
-    "category": "Survival > Desert Island > Day 1",
-    "scenario": "survive-island",
-    "quiz_variants": [
-      {
-        "template": "Write “___” or “SOS” in 10-meter letters using rocks, seaweed or by digging trenches.",
-        "answers": ["HELP", "help"]
-      },
-      {
-        "template": "Visible from planes ___ km away.",
-        "answers": ["20", "20 km", "twenty"]
-      }
-    ],
-    "tags": ["signal", "rescue", "priority"],
-    "weight": 1.0,
-    "language": "en"
-  },
-  {
-    "id": "island-sos-002",
-    "full": "Your #1 killer in the first 72 hours is dehydration, not hunger. Find water before building shelter.",
-    "category": "Survival > Desert Island > Day 1",
-    "scenario": "survive-island",
-    "quiz_variants": [
-      {
-        "template": "Your #1 killer in the first ___ hours is dehydration, not hunger.",
-        "answers": ["72", "72 hours", "three days"]
-      }
-    ],
-    "tags": ["dehydration", "priority", "water"],
-    "weight": 1.0,
-    "language": "en"
-  },
-  {
-    "id": "wolf-hunt-001",
-    "full": "Wolves can hunt over 10 km when working as a pack.",
-    "category": "Animals > Wolf > Behavior",
-    "scenario": "animal-master",
-    "quiz_variants": [
-      {
-        "template": "Wolves can hunt over ___ km when working as a pack.",
-        "answers": ["10", "10 km", "ten"]
-      },
-      {
-        "template": "Wolves can hunt over 10 km when working as a ____.",
-        "answers": ["pack", "a pack", "group"]
-      }
-    ],
-    "tags": ["teamwork", "endurance"],
-    "weight": 1.0,
-    "language": "en"
-  },
-  {
-    "id": "poland-nobel-001",
-    "full": "Wisława Szymborska won the Nobel Prize in Literature in 1996 for poetry that with ironic precision allows the historical and biological context to come to light in fragments of human reality.",
-    "category": "Countries > Poland > Literature",
-    "scenario": "become-polish",
-    "quiz_variants": [
-      {
-        "template": "Wisława Szymborska won the Nobel Prize in Literature in ____.",
-        "answers": ["1996", "nineteen ninety-six"]
-      }
-    ],
-    "tags": ["nobel", "poetry"],
-    "weight": 1.0,
-    "language": "en"
-  },
-  {
-    "id": "poland-flag-001",
-    "full": "The Polish flag symbolises identity, sovereignty and national pride and has the colors of red and white.",
-    "category": "Countries > Poland > Symbols",
-    "scenario": "become-polish",
-    "quiz_variants": [
-      {
-        "template": "The Polish flag has the colors of ___ and white.",
-        "answers": ["red", "red and white"]
-      }
-    ],
-    "tags": ["flag", "symbols"],
-    "weight": 1.0,
-    "language": "en"
-  },
-  {
-    "id": "polish-phrase-001",
-    "full": "I love you - Kocham cię. It pronounces koh-ham chyeh.",
-    "category": "Languages > Polish > Phrases",
-    "scenario": "become-polish",
-    "quiz_variants": [
-      {
-        "template": "I love you - ___ cię.",
-        "answers": ["Kocham", "ko-ham"]
-      }
-    ],
-    "tags": ["phrase", "romance"],
-    "weight": 1.0,
-    "language": "en"
-  },
-  {
-    "id": "war-electricity-001",
-    "full": "First thing to do if there's a war in your country is to understand that you will most likely lose electricity, so put blankets, carpets or clothes over the windows.",
-    "category": "Survival > Urban War > Preparation",
-    "scenario": "survive-war",
-    "quiz_variants": [
-      {
-        "template": "Put ___ , carpets or clothes over the windows to stay warm.",
-        "answers": ["blankets", "blankets or clothes"]
-      }
-    ],
-    "tags": ["blackout", "stealth"],
-    "weight": 1.0,
-    "language": "en"
-  },
-  {
-    "id": "cooking-saute-001",
-    "full": "To increase your cooking skill significantly, understand sauté: cook food quickly in a little fat over high heat while stirring constantly.",
-    "category": "Skills > Cooking > Techniques",
-    "scenario": "become-chef",
-    "quiz_variants": [
-      {
-        "template": "Sauté: cook food quickly in a little ___ over high heat.",
-        "answers": ["fat", "oil", "butter"]
-      }
-    ],
-    "tags": ["technique", "basics"],
-    "weight": 1.0,
-    "language": "en"
-  }
+{
+  "id": "island-sos-001",
+  "full": "The first thing to do if stranded on a desert island is to write “HELP” or “SOS” in 10-meter letters using rocks, seaweed or by digging trenches. Visible from planes 20 km away.",
+  "category": "Survival > Desert Island > Day 1",
+  "scenario": "survive-island",
+  "keys": [
+    { "text": "HELP",         "type": "signal" },
+    { "text": "SOS",          "type": "signal" },
+    { "text": "10-meter",     "type": "distance" },
+    { "text": "20 km",        "type": "distance" },
+    { "text": "rocks",        "type": "material" },
+    { "text": "seaweed",      "type": "material" },
+    { "text": "digging trenches", "type": "method" }
+  ],
+  "tags": ["signal", "rescue", "priority", "visibility", "survival-basics"],
+  "weight": 1.0,
+  "language": "en"
+},
+{
+  "id": "island-sos-002",
+  "full": "Your #1 killer in the first 72 hours is dehydration, not hunger. Find water before building shelter.",
+  "category": "Survival > Desert Island > Day 1",
+  "scenario": "survive-island",
+  "keys": [
+    { "text": "72 hours",   "type": "time" },
+    { "text": "dehydration", "type": "danger" },
+    { "text": "water",      "type": "priority" }
+  ],
+  "tags": ["dehydration", "priority", "water", "survival-basics"],
+  "weight": 1.0,
+  "language": "en"
+},
+{
+  "id": "wolf-hunt-001",
+  "full": "Wolves can hunt over 10 km when working as a pack.",
+  "category": "Animals > Wolf > Behavior",
+  "scenario": "animal-master",
+  "keys": [
+    { "text": "10 km", "type": "distance" },
+    { "text": "pack",  "type": "group" }
+  ],
+  "tags": ["teamwork", "endurance", "hunting"],
+  "weight": 1.0,
+  "language": "en"
+},
+{
+  "id": "poland-nobel-001",
+  "full": "Wisława Szymborska won the Nobel Prize in Literature in 1996 for poetry that with ironic precision allows the historical and biological context to come to light in fragments of human reality.",
+  "category": "Countries > Poland > Literature",
+  "scenario": "become-polish",
+  "keys": [
+    { "text": "Wisława Szymborska", "type": "person" },
+    { "text": "1996",              "type": "year" },
+    { "text": "Nobel Prize in Literature", "type": "award" }
+  ],
+  "tags": ["nobel", "poetry", "literature", "poland"],
+  "weight": 1.0,
+  "language": "en"
+},
+{
+  "id": "poland-flag-001",
+  "full": "The Polish flag 🇵🇱 symbolises identity, sovereignty and national pride and has the colors of red and white.",
+  "category": "Countries > Poland > Symbols",
+  "scenario": "become-polish",
+  "keys": [
+    { "text": "red and white", "type": "color" },
+    { "text": "🇵🇱",            "type": "flag" }
+  ],
+  "tags": ["flag", "symbols", "poland", "national-pride"],
+  "weight": 1.0,
+  "language": "en"
+},
+{
+  "id": "polish-phrase-001",
+  "full": "I love you in Polish is \"Kocham cię\" — pronounced roughly koh-ham chyeh.",
+  "category": "Languages > Polish > Phrases",
+  "scenario": "become-polish",
+  "keys": [
+    { "text": "Kocham cię", "type": "phrase" },
+    { "text": "koh-ham chyeh", "type": "pronunciation" }
+  ],
+  "tags": ["phrase", "romance", "polish", "love"],
+  "weight": 1.0,
+  "language": "en"
+},
+{
+  "id": "war-electricity-001",
+  "full": "First thing to do if there's a war in your country is to understand that you will most likely lose electricity, so put blankets, carpets or clothes over the windows to stay warm and reduce light leakage.",
+  "category": "Survival > Urban War > Preparation",
+  "scenario": "survive-war",
+  "keys": [
+    { "text": "blankets",         "type": "material" },
+    { "text": "carpets",          "type": "material" },
+    { "text": "clothes",          "type": "material" },
+    { "text": "electricity",      "type": "risk" }
+  ],
+  "tags": ["blackout", "stealth", "warmth", "war-prep"],
+  "weight": 1.0,
+  "language": "en"
+},
+{
+  "id": "cooking-saute-001",
+  "full": "To increase your cooking skill significantly, master sauté: cook food quickly in a little fat over high heat while stirring constantly.",
+  "category": "Skills > Cooking > Techniques",
+  "scenario": "become-chef",
+  "keys": [
+    { "text": "fat",           "type": "ingredient" },
+    { "text": "high heat",     "type": "temperature" },
+    { "text": "stirring constantly", "type": "method" }
+  ],
+  "tags": ["technique", "basics", "cooking", "sauté"],
+  "weight": 1.0,
+  "language": "en"
+},
+{
+  "id": "math-addition-001",
+  "full": "The legendary equation that proves even geniuses start simple: 3 + 11 = 14. This basic addition is the foundation of all arithmetic and the first math fact every kid learns worldwide.",
+  "category": "Math > Basics > Addition",
+  "scenario": "become-math-god",
+  "keys": [
+    { "text": "3",          "type": "number" },
+    { "text": "11",          "type": "number" },
+    { "text": "+",          "type": "operator" },
+    { "text": "=",          "type": "equals" },
+    { "text": "14",          "type": "result" }
+  ],
+  "tags": ["addition", "basics", "arithmetic", "dopamine-starter"],
+  "weight": 0.5,
+  "language": "en"
+}
 ]

@@ -1,0 +1,37 @@
+type KeyType =
+  | "string"      // default — anything not below
+  | "number"      // pure numbers: "5", "20", "100"
+  | "distance"    // "10 meter", "20 km", "500 m"
+  | "country"     // "Poland", "Japan", "Sweden"
+  | "latin"       // scientific names: "Citrus limon", "Canis lupus"
+  | "phrase"      // "I love you", "Kocham cię"
+  | "signal"      // "SOS", "HELP", "Mayday"
+  | "year"        // "1996", "1945"
+  | "temperature" // "100°C", "-40°F"
+| "material"   → rocks, seaweed, sand, wood, etc.
+| "method"     → digging trenches, lighting fire, etc.
+
+Because:
+Type,Auto-hint on wrong answer
+signal,"""It's a distress signal"""
+distance,"""It's a distance"""
+number,"""It's a number"""
+country,"""It's a country"""
+latin,"""Scientific name"""
+phrase,"""It's a phrase"""
+year,"""It's a year"""
+string,"First letter: ""starts with H..."""
+
+Future modes (already possible):
+
+“Quiz me only on distances” → filter key.type === "distance"
+“Only country names”
+“Only signals & phrases”
+“Hard mode: no hints”
+
+We keep:
+
+keys[] → for quizzing
+tags[] → for search & discovery
+category → for breadcrumb
+weight → for future smart spacing

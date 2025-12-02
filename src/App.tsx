@@ -9,48 +9,91 @@ import SwipeHint from './SwipeHint'
 import { useSwipeable } from 'react-swipeable'
 import styles from './styles/App.module.css'
 
+import { getFlagFromCategory } from './utils/flags'
+
+// Updated interface to match new structure
 interface Fact {
   id: string
   full: string
+  category: string
   scenario?: string
-  quiz_variants?: Array<{ template: string; answers: string[] }>
+  keys?: Array<{ text: string; type: string }>
+  tags?: string[]
+  weight?: number
+  language?: string
 }
 
 const facts: Fact[] = factsData as Fact[]
 
 export default function App() {
+  // count facts
   const [index, setIndex] = useState(0)
+  // seen fact
   const [seen, setSeen] = useState<Fact[]>([])
+  // Quiz mode
   const [quizMode, setQuizMode] = useState(false)
+  // input when quizzed
   const [input, setInput] = useState('')
+  // Show quizz prompt
   const [showPrompt, setShowPrompt] = useState(false)
+// Show quiz prompt after N amount
+const [quizAfterAmount, setQuizAfterAmount] = useState<number>(5)
 
-  const currentFact = quizMode ? seen[index] : facts[index]
+// ← currentFact must be calculated inside the component
+  const currentFact = quizMode ? seen[index] || facts[0] : facts[index]
+
+  // ← now we can use currentFact safely
+  const flagEmoji = currentFact ? getFlagFromCategory(currentFact.category) : ''
+
+// DOPAMINE STATES
+  const [points, setPoints] = useState(0)
+  const [streak, setStreak] = useState(0)
+const [currentAnswerState, setCurrentAnswerState] = useState<'idle' | 'correct' | 'wrong'>('idle')
+
 
   useEffect(() => {
-    if (!quizMode && seen.length === 10 && seen.length > 0) {
+    if (!quizMode && seen.length === quizAfterAmount && seen.length > 0) {
       setShowPrompt(true)
     }
-  }, [seen, quizMode])
+  }, [seen, quizMode, quizAfterAmount])
 
   const nextFact = () => {
     if (!currentFact) return
 
     if (quizMode) {
-      // Simple check (you can improve with real answer validation later)
-      const correct = currentFact.quiz_variants?.some(v =>
-        v.answers.some(a => a.toLowerCase() === input.trim().toLowerCase())
-      )
-      if (correct) {
-        // You can add points here later
-        console.log('Correct! 🎉')
+      // Check answer
+      const user = input.trim().toLowerCase()
+      const isCorrect = currentFact.keys?.some(k => 
+        k.text.toLowerCase() === user
+      ) || false
+
+      if (isCorrect) {
+        setPoints(p => p + 10)
+        setStreak(s => s + 1)
+        setCurrentAnswerState('correct')
+      } else {
+        setStreak(0)
+        setCurrentAnswerState('wrong')
       }
-      setInput('')
+
+      // Show result for 2 seconds then next
+      setTimeout(() => {
+        setInput('')
+setCurrentAnswerState('idle')
+        setIndex(prev => prev + 1)
+      }, 2000)
     } else {
-      setSeen(prev => [...prev, facts[index]])
+      setSeen(prev => [...prev, currentFact])
+      setIndex(prev => prev + 1)
     }
-    setIndex(prev => prev + 1)
   }
+
+  const handlers = useSwipeable({
+  onSwipedUp: nextFact,
+  onSwipedDown: () => index > 0 && setIndex(prev => prev - 1),
+  trackMouse: true,
+  preventScrollOnSwipe: true,
+})
 
   const startQuiz = () => {
     setQuizMode(true)
@@ -58,56 +101,54 @@ export default function App() {
     setIndex(0)
   }
 
-  const handlers = useSwipeable({
-    onSwipedUp: () => {
-      console.log('Swiped up!') // Debug log
-      nextFact()
-    },
-    onSwipedDown: () => {
-      // Optional: go back
-      if (index > 0) setIndex(prev => prev - 1)
-    },
-    trackMouse: true,
-    preventScrollOnSwipe: true,
-    // swipeDurationThreshold: 500,
-    // swipeVelocityThreshold: 0.5,
-  })
+  // Fire emoji based on streak
+  const fireEmojis = () => {
+    if (streak === 0) return ''
+    if (streak < 5) return '🔥'.repeat(Math.min(streak, 3))
+    if (streak < 10) return '🔥'.repeat(3) + `${streak}`
+    if (streak < 20) return '🔥🔥🔥' + `${streak}🔥🔥🔥`
+    return '🔥🔥🔥🔥🔥 ' + streak + ' 🔥🔥🔥🔥🔥'
+  }
 
   return (
     <div className={styles.app} {...handlers}>
-      {/* Header */}
       <header className={styles.header}>
         <div className={styles.headerContent}>
           <GlobeMenu />
-          <div className={styles.points}>🔥 0 pts</div>
+          <div className={styles.points}>
+            {fireEmojis()} {points} pts
+          </div>
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className={styles.main}>
-        {currentFact ? (
-          quizMode ? (
-            <FactCard fact={currentFact} mode="quiz" />
-          ) : (
-            <FactCard fact={currentFact} mode="learn" />
-          )
-        ) : (
-          <div className={styles.noFacts}>End of facts — add more!</div>
-        )}
-      </main>
+      <div className={styles.contentWrapper}>
+        <div className={styles.categoryWrapper}>
+          <h1 className={styles.categoryTitle}>
+            {currentFact?.category || 'Loading...'}
+          </h1>
+        </div>
 
-      {/* Quiz Input */}
+        <main className={styles.main}>
+          <FactCard 
+            fact={currentFact} 
+            mode={quizMode ? "quiz" : "learn"}
+            isCorrect={currentAnswerState === 'correct' ? true : currentAnswerState === 'wrong' ? false : undefined}
+          />
+        </main>
+      </div>
+
       {quizMode && (
-        <QuizInput
-          value={input}
-          onChange={setInput}
+        <QuizInput 
+          value={input} 
+          onChange={setInput} 
           onSubmit={nextFact}
+          isWrong={currentAnswerState === 'wrong'}
         />
       )}
 
-      {/* Quiz Prompt Overlay */}
       {showPrompt && (
         <QuizPrompt
+          quizAfterAmount={quizAfterAmount}
           onStartQuiz={startQuiz}
           onContinue={() => {
             setShowPrompt(false)
@@ -116,16 +157,8 @@ export default function App() {
         />
       )}
 
-      {/* Swipe Hint */}
       {!quizMode && <SwipeHint />}
-
-      {/* Invisible click-to-next overlay (for desktop) */}
-      {!quizMode && (
-        <div
-          onClick={nextFact}
-          className={styles.clickOverlay}
-        />
-      )}
+      {!quizMode && <div onClick={nextFact} className={styles.clickOverlay} />}
     </div>
   )
 }

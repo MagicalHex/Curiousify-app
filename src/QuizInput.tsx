@@ -3,22 +3,26 @@ import styles from './styles/QuizInput.module.css'
 
 interface QuizInputProps {
   value: string
-  onChange: (value: string) => void
+  onChange: (v: string) => void
   onSubmit: () => void
+  isWrong?: boolean
 }
 
-export default function QuizInput({ value, onChange, onSubmit }: QuizInputProps) {
+export default function QuizInput({ value, onChange, onSubmit, isWrong }: QuizInputProps) {
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${isWrong ? styles.shake : ''}`}>
       <input
+        className={styles.input}
         type="text"
         value={value}
-        onChange={e => onChange(e.target.value)}
-        onKeyDown={e => e.key === 'Enter' && onSubmit()}
-        placeholder="type your answer…"
-        className={styles.input}
+        onChange={(e) => onChange(e.target.value)}
+        onKeyDown={(e) => e.key === 'Enter' && onSubmit()}
+        placeholder="Type your answer..."
         autoFocus
       />
+      <button className={styles.submitButton} onClick={onSubmit}>
+        Submit
+      </button>
     </div>
   )
 }
