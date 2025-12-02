@@ -1,0 +1,38 @@
+Pythagorean theorem
+a² + b² = c²
+Logarithms
+log(xy) = log x + log y
+Calculus (limit definition of derivative)
+f′(x) = lim(h→0) [f(x+h) − f(x)] / h
+Newton’s law of gravity
+F = G m₁ m₂ / r²
+Square root of minus one (imaginary unit)
+i² = −1
+Euler’s formula for polyhedra
+V − E + F = 2
+Normal distribution (Gaussian)
+φ(x) = (1/√(2πσ²)) e^−((x−μ)²/(2σ²))
+Wave equation
+∂²u/∂t² = c² ∇²u
+Fourier transform
+ˆf(ξ) = ∫_{-∞}^{∞} f(x) e^{−2πiξx} dx
+Navier–Stokes equations
+ρ (∂v/∂t + v · ∇v) = −∇p + μ∇²v + f
+Maxwell’s equations (differential form)
+∇·D = ρ
+∇·B = 0
+∇×E = −∂B/∂t
+∇×H = J + ∂D/∂t
+Second law of thermodynamics (entropy)
+dS ≥ δQ / T
+Relativity
+E = mc²
+Schrödinger equation
+i ℏ ∂ψ/∂t = Ĥ ψ
+Information theory (entropy)
+H = − ∑ p(x) log p(x)
+Chaos theory (logistic map)
+x_{n+1} = r x_n (1 − x_n)
+Black–Scholes equation
+∂V/∂t + (1/2) σ² S² ∂²V/∂S² + r S ∂V/∂S − r V = 0
+

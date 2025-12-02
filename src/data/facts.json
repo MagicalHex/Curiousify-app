@@ -65,7 +65,8 @@
   "scenario": "become-polish",
   "keys": [
     { "text": "red and white", "type": "color" },
-    { "text": "🇵🇱",            "type": "flag" }
+    { "text": "red",            "type": "color" },
+    { "text": "white",          "type": "color" }
   ],
   "tags": ["flag", "symbols", "poland", "national-pride"],
   "weight": 1.0,

@@ -8,10 +8,9 @@ import QuizPrompt from './QuizPrompt'
 import SwipeHint from './SwipeHint'
 import { useSwipeable } from 'react-swipeable'
 import styles from './styles/App.module.css'
-
+import QuizResults from './QuizResults'
 import { getFlagFromCategory } from './utils/flags'
 
-// Updated interface to match new structure
 interface Fact {
   id: string
   full: string
@@ -26,87 +25,102 @@ interface Fact {
 const facts: Fact[] = factsData as Fact[]
 
 export default function App() {
-  // count facts
-  const [index, setIndex] = useState(0)
-  // seen fact
-  const [seen, setSeen] = useState<Fact[]>([])
-  // Quiz mode
+  const [index, setIndex] = useState(0)                    // ← Global progress (never resets)
+  const [viewedFacts, setViewedFacts] = useState<Fact[]>([]) // ← Current quiz batch
   const [quizMode, setQuizMode] = useState(false)
-  // input when quizzed
+  const [quizIndex, setQuizIndex] = useState(0)             // ← Position inside quiz batch
   const [input, setInput] = useState('')
-  // Show quizz prompt
   const [showPrompt, setShowPrompt] = useState(false)
-// Show quiz prompt after N amount
-const [quizAfterAmount, setQuizAfterAmount] = useState<number>(5)
+  const [quizAfterAmount] = useState(5)                    // ← Could be setting later
+  const [correctCount, setCorrectCount] = useState(0)
+  const [showResults, setShowResults] = useState(false)
 
-// ← currentFact must be calculated inside the component
-  const currentFact = quizMode ? seen[index] || facts[0] : facts[index]
-
-  // ← now we can use currentFact safely
-  const flagEmoji = currentFact ? getFlagFromCategory(currentFact.category) : ''
-
-// DOPAMINE STATES
+  // DOPAMINE
   const [points, setPoints] = useState(0)
   const [streak, setStreak] = useState(0)
-const [currentAnswerState, setCurrentAnswerState] = useState<'idle' | 'correct' | 'wrong'>('idle')
+  const [answerState, setAnswerState] = useState<'idle' | 'correct' | 'wrong'>('idle')
 
+  // Current fact logic
+  const currentFact = quizMode
+    ? viewedFacts[quizIndex]                                   // ← Quiz: from batch
+    : facts[index]                                             // ← Learn: from global index
 
+  const flagEmoji = currentFact ? getFlagFromCategory(currentFact.category) : ''
+
+  // Trigger quiz prompt when we hit the limit
   useEffect(() => {
-    if (!quizMode && seen.length === quizAfterAmount && seen.length > 0) {
+    if (!quizMode && viewedFacts.length === quizAfterAmount && viewedFacts.length > 0) {
       setShowPrompt(true)
     }
-  }, [seen, quizMode, quizAfterAmount])
+  }, [viewedFacts.length, quizMode, quizAfterAmount])
 
   const nextFact = () => {
     if (!currentFact) return
 
     if (quizMode) {
-      // Check answer
-      const user = input.trim().toLowerCase()
-      const isCorrect = currentFact.keys?.some(k => 
-        k.text.toLowerCase() === user
+      // === QUIZ MODE: Check answer ===
+      const isCorrect = currentFact.keys?.some(k =>
+        k.text.toLowerCase() === input.trim().toLowerCase()
       ) || false
 
       if (isCorrect) {
         setPoints(p => p + 10)
         setStreak(s => s + 1)
-        setCurrentAnswerState('correct')
+        setCorrectCount(c => c + 1)
+        setAnswerState('correct')
       } else {
         setStreak(0)
-        setCurrentAnswerState('wrong')
+        setAnswerState('wrong')
       }
 
-      // Show result for 2 seconds then next
       setTimeout(() => {
         setInput('')
-setCurrentAnswerState('idle')
-        setIndex(prev => prev + 1)
+        setAnswerState('idle')
+
+        if (quizIndex + 1 < viewedFacts.length) {
+          setQuizIndex(q => q + 1)
+        } else {
+          // === QUIZ DONE → Back to learning, continue from next fact ===
+          setShowResults(true)
+          setQuizMode(false)
+          setQuizIndex(0)
+          setViewedFacts([])        // ← Clear batch for next round
+          // setIndex(i => i + 1)      // ← THIS IS THE KEY: continue to fact #6
+        }
       }, 2000)
     } else {
-      setSeen(prev => [...prev, currentFact])
-      setIndex(prev => prev + 1)
+      // === LEARN MODE ===
+      if (!viewedFacts.some(f => f.id === currentFact.id)) {
+        setViewedFacts(prev => [...prev, currentFact])
+      }
+      setIndex(i => i + 1)
     }
   }
 
-  const handlers = useSwipeable({
-  onSwipedUp: nextFact,
-  onSwipedDown: () => index > 0 && setIndex(prev => prev - 1),
-  trackMouse: true,
-  preventScrollOnSwipe: true,
-})
-
   const startQuiz = () => {
     setQuizMode(true)
+    setQuizIndex(0)
     setShowPrompt(false)
-    setIndex(0)
   }
 
-  // Fire emoji based on streak
+  const handlers = useSwipeable({
+    onSwipedUp: nextFact,
+    onSwipedDown: () => {
+      if (quizMode) {
+        if (quizIndex > 0) setQuizIndex(q => q - 1)
+      } else {
+        if (index > 0) setIndex(i => i - 1)
+      }
+    },
+    trackMouse: true,
+    preventScrollOnSwipe: true,
+  })
+
   const fireEmojis = () => {
     if (streak === 0) return ''
     if (streak < 5) return '🔥'.repeat(Math.min(streak, 3))
-    if (streak < 10) return '🔥'.repeat(3) + `${streak}`
-    if (streak < 20) return '🔥🔥🔥' + `${streak}🔥🔥🔥`
+    if (streak < 10) return '🔥🔥🔥' + streak
+    if (streak < 20) return '🔥🔥🔥' + streak + '🔥🔥🔥'
     return '🔥🔥🔥🔥🔥 ' + streak + ' 🔥🔥🔥🔥🔥'
   }
 
@@ -124,25 +138,27 @@ setCurrentAnswerState('idle')
       <div className={styles.contentWrapper}>
         <div className={styles.categoryWrapper}>
           <h1 className={styles.categoryTitle}>
-            {currentFact?.category || 'Loading...'}
+            {currentFact?.category || 'Loading...'} {flagEmoji}
           </h1>
         </div>
 
         <main className={styles.main}>
-          <FactCard 
-            fact={currentFact} 
-            mode={quizMode ? "quiz" : "learn"}
-            isCorrect={currentAnswerState === 'correct' ? true : currentAnswerState === 'wrong' ? false : undefined}
-          />
+          {currentFact && (
+            <FactCard
+              fact={currentFact}
+              mode={quizMode ? "quiz" : "learn"}
+              isCorrect={answerState === 'correct' ? true : answerState === 'wrong' ? false : undefined}
+            />
+          )}
         </main>
       </div>
 
       {quizMode && (
-        <QuizInput 
-          value={input} 
-          onChange={setInput} 
+        <QuizInput
+          value={input}
+          onChange={setInput}
           onSubmit={nextFact}
-          isWrong={currentAnswerState === 'wrong'}
+          isWrong={answerState === 'wrong'}
         />
       )}
 
@@ -152,13 +168,25 @@ setCurrentAnswerState('idle')
           onStartQuiz={startQuiz}
           onContinue={() => {
             setShowPrompt(false)
-            setSeen([])
+            setViewedFacts([])           // Skip quiz? Reset batch, keep going
+            // setIndex(i => i + 1)
           }}
         />
       )}
 
       {!quizMode && <SwipeHint />}
       {!quizMode && <div onClick={nextFact} className={styles.clickOverlay} />}
+
+      {showResults && (
+        <QuizResults
+          correct={correctCount}
+          total={quizAfterAmount}
+          onClose={() => {
+            setShowResults(false)
+            setCorrectCount(0)
+          }}
+        />
+      )}
     </div>
   )
 }

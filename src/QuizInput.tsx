@@ -21,7 +21,7 @@ export default function QuizInput({ value, onChange, onSubmit, isWrong }: QuizIn
         autoFocus
       />
       <button className={styles.submitButton} onClick={onSubmit}>
-        Submit
+        →
       </button>
     </div>
   )

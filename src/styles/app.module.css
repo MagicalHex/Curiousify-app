@@ -44,7 +44,7 @@
   flex-direction: column;
   align-items: center;         /* ← horizontal centering */
   justify-content: flex-start; /* ← keeps category at top, fact below */
-  padding-top: 2rem;           /* optional breathing room after header */
+  /* padding-top: 2rem;    */
 }
 
 /* Category title — big, centered, tight */
@@ -88,7 +88,7 @@
 /* Mobile */
 @media (max-width: 768px) {
   .header { padding: 1rem; }
-  .categoryWrapper { padding: 1.6rem 1rem 0.8rem; }
-  .categoryTitle { font-size: 1.65rem; }
+  /* .categoryWrapper { padding: 1.6rem 1rem 0.8rem; } */
+  .categoryTitle { font-size: 1rem; }
   .main { padding: 0 1rem 2.5rem; }
 }
