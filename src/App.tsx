@@ -40,6 +40,15 @@ export default function App() {
   const [streak, setStreak] = useState(0)
   const [answerState, setAnswerState] = useState<'idle' | 'correct' | 'wrong'>('idle')
 
+  // Selections
+  const [mode, setMode] = useState<'chill' | 'quiz'>('chill')
+  const [selectedCountry, setSelectedCountry] = useState<string | null>(null)
+
+  const handleCountrySelect = (country: string) => {
+    setSelectedCountry(country)
+    console.log(`Selected: ${country}`)  // Or whatever logic you want
+  }
+
   // Current fact logic
   const currentFact = quizMode
     ? viewedFacts[quizIndex]                                   // ← Quiz: from batch
@@ -128,7 +137,11 @@ export default function App() {
     <div className={styles.app} {...handlers}>
       <header className={styles.header}>
         <div className={styles.headerContent}>
-          <GlobeMenu />
+          <GlobeMenu
+        mode={mode}
+        onModeChange={setMode}  // ← This fixes it! Now onChange is a function
+        onCountrySelect={handleCountrySelect}  // Optional, but hook it up
+      />
           <div className={styles.points}>
             {fireEmojis()} {points} pts
           </div>

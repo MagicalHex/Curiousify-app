@@ -1,6 +1,15 @@
 // src/utils/flags.ts
-export const flagMap = {
-poland: 'PL',
+const countryCodeToEmoji = (code: string): string => {
+  if (!code || code.length !== 2) return ''
+  return code
+    .toUpperCase()
+    .split('')
+    .map(char => String.fromCodePoint(0x1F1E6 + char.charCodeAt(0) - 65))
+    .join('')
+}
+
+const countryNameToCode: Record<string, string> = {
+  poland: 'PL',
   france: 'FR',
   japan: 'JP',
   brazil: 'BR',
@@ -59,10 +68,20 @@ poland: 'PL',
   estonia: 'EE',
 } as const
 
+/** Convert a country name (as used in your facts) → flag emoji */
+export const getFlagEmoji = (countryName: string): string => {
+  if (!countryName) return ''
+  const key = countryName.toLowerCase().replace(/\s+/g, '')
+  const code = countryNameToCode[key as keyof typeof countryNameToCode]
+  return code ? countryCodeToEmoji(code) : ''
+}
+
+/** Keep your old function for category-based facts */
 export const getFlagFromCategory = (category: string): string => {
   if (!category) return ''
   const match = category.match(/Countries > (\w+)/i)
   if (!match) return ''
   const key = match[1].toLowerCase().replace(/\s+/g, '')
-  return flagMap[key as keyof typeof flagMap] || ''
+  const code = countryNameToCode[key as keyof typeof countryNameToCode]
+  return code ? countryCodeToEmoji(code) : ''
 }

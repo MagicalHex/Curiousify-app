@@ -1,58 +1,250 @@
 // src/components/GlobeMenu.tsx
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import styles from './styles/GlobeMenu.module.css'
+import { getFlagEmoji } from './utils/flags'
+import ModeSelector from './ModeSelector'
 
-const countries = ['USA', 'Poland', 'Sweden', 'Japan', 'Germany', 'Brazil', 'India', 'Australia', 'Canada', 'France']
+const countries = [
+  'Germany', 'Poland', 'Sweden', 'Japan', 'Brazil', 'India', 'Australia',
+  'Canada', 'France', 'Italy', 'Spain', 'Mexico', 'South Korea', 'Netherlands',
+  'Denmark', 'Norway', 'Finland', 'Belgium', 'Austria', 'Switzerland', 'USA'
+]
 
-export default function GlobeMenu() {
+const goalPlaceholders = [
+  'Become Polish',
+  'Understand space',
+  'Better cooking',
+  'Master quantum physics',
+  'Speak like a native',
+  'Decode ancient texts',
+  'Think in 11 dimensions'
+]
+
+type View = 'global' | 'account'
+
+interface GlobeMenuProps {
+  mode: 'chill' | 'quiz'
+  onModeChange: (mode: 'chill' | 'quiz') => void
+  onCountrySelect?: (country: string) => void
+}
+
+export default function GlobeMenu({ mode, onModeChange, onCountrySelect }: GlobeMenuProps) {
   const [isOpen, setIsOpen] = useState(false)
-  const [search, setSearch] = useState('')
+  const [view, setView] = useState<View>('global')
+  const [countrySearch, setCountrySearch] = useState('')
+  const [globalSearch, setGlobalSearch] = useState('')
+  const [placeholder, setPlaceholder] = useState(goalPlaceholders[0])
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  // Quiz Settings State
+const [quizFrequency, setQuizFrequency] = useState<number>(10)
+  const [quizStyle, setQuizStyle] = useState<'normal' | 'lasvegas'>('normal')
+
+  // Rolling placeholder
+  // Animated typing placeholder (one letter at a time)
+  useEffect(() => {
+    if (!isOpen) {
+      setPlaceholder('')
+      return
+    }
+
+    let currentIndex = 0
+    let charIndex = 0
+    let isDeleting = false
+    let currentText = ''
+let timer: number
+
+    const type = () => {
+      const target = goalPlaceholders[currentIndex]
+
+      if (!isDeleting) {
+        // Typing
+        currentText = target.slice(0, charIndex + 1)
+        charIndex++
+      } else {
+        // Deleting
+        currentText = target.slice(0, charIndex)
+        charIndex--
+      }
+
+      setPlaceholder(currentText + (charIndex < target.length && !isDeleting ? '|' : ''))
+
+      let delay = 120
+
+      if (!isDeleting && charIndex === target.length) {
+        delay = 2000 // Pause at end
+        isDeleting = true
+      } else if (isDeleting && charIndex === 0) {
+        isDeleting = false
+        currentIndex = (currentIndex + 1) % goalPlaceholders.length
+        delay = 500 // Pause before next word
+      } else if (isDeleting) {
+        delay = 60 // Faster delete
+      }
+
+      timer = setTimeout(type, delay)
+    }
+
+    // Start after slight delay when menu opens
+    const startTimer = setTimeout(() => {
+      type()
+    }, 400)
+
+    return () => {
+      clearTimeout(startTimer)
+      clearTimeout(timer)
+    }
+  }, [isOpen])
+
+  // Auto-focus top search
+  useEffect(() => {
+    if (isOpen) {
+      const timer = setTimeout(() => inputRef.current?.focus(), 150)
+      return () => clearTimeout(timer)
+    }
+  }, [isOpen])
+
+  // Close on Escape
+  useEffect(() => {
+    const esc = (e: KeyboardEvent) => e.key === 'Escape' && setIsOpen(false)
+    if (isOpen) window.addEventListener('keydown', esc)
+    return () => window.removeEventListener('keydown', esc)
+  }, [isOpen])
+
+  const filtered = countries.filter(c =>
+    c.toLowerCase().includes(countrySearch.toLowerCase())
+  )
 
   return (
     <div className={styles.container}>
       <button
-        onClick={() => setIsOpen(!isOpen)}
-        className={styles.globeButton}
-        aria-label="Open country menu"
+        onClick={() => setIsOpen(v => !v)}
+        className={styles.globeBtn}
+        aria-label={isOpen ? 'Close menu' : 'Open menu'}
       >
-        🌍
+        {isOpen ? '✕' : '🌍'}
       </button>
 
-      {isOpen && (
-        <>
-          <div
-            className={styles.overlay}
-            onClick={() => setIsOpen(false)}
+      {isOpen && <div className={styles.overlay} onClick={() => setIsOpen(false)} />}
+
+      <div className={`${styles.panel} ${isOpen ? styles.open : ''}`}>
+        {/* Top Bar */}
+        <div className={styles.topBar}>
+          <button onClick={() => setIsOpen(false)} className={styles.closeBtn}>
+            ✕
+          </button>
+          <input
+            ref={inputRef}
+            type="text"
+            placeholder={placeholder}
+            value={globalSearch}
+            onChange={e => setGlobalSearch(e.target.value)}
+            className={styles.searchInput}
           />
-          <div className={styles.menu}>
-            <div className={styles.searchContainer}>
-              <input
-                type="text"
-                placeholder="Search country..."
-                value={search}
-                onChange={e => setSearch(e.target.value)}
-                className={styles.searchInput}
+        </div>
+
+        {/* Navigation Tabs */}
+        <div className={styles.navTabs}>
+          <button
+            className={`${styles.tab} ${view === 'global' ? styles.activeTab : ''}`}
+            onClick={() => setView('global')}
+          >
+            Global
+          </button>
+
+          <button className={`${styles.tab} ${styles.activeTab}`}>
+            Modes
+          </button>
+
+          <button
+            className={`${styles.tab} ${view === 'account' ? styles.activeTab : ''}`}
+            onClick={() => setView('account')}
+          >
+            Account
+          </button>
+        </div>
+
+        {/* 2-Column Layout */}
+        <div className={styles.twoColumnGrid}>
+          {/* Left Column */}
+          <div className={styles.leftCol}>
+            {view === 'global' ? (
+              <div className={styles.countriesSection}>
+                <input
+                  type="text"
+                  placeholder="Search countries..."
+                  value={countrySearch}
+                  onChange={e => setCountrySearch(e.target.value)}
+                  className={styles.countryInput}
+                />
+                <div className={styles.countryList}>
+                  {filtered.length === 0 ? (
+                    <p className={styles.noResult}>No countries found</p>
+                  ) : (
+                    filtered.map(country => (
+                      <button
+                        key={country}
+                        className={styles.countryBtn}
+                        onClick={() => {
+                          onCountrySelect?.(country)
+                          setIsOpen(false)
+                          setCountrySearch('')
+                        }}
+                      >
+                        <span className={styles.flag}>{getFlagEmoji(country)}</span>
+                        {country}
+                      </button>
+                    ))
+                  )}
+                </div>
+              </div>
+            ) : (
+              // In Account view → Modes move to left
+              <ModeSelector
+                mode={mode}
+                onChange={onModeChange}
+                quizFrequency={quizFrequency}
+onQuizFrequencyChange={setQuizFrequency}
+                quizStyle={quizStyle}
+                onQuizStyleChange={setQuizStyle}
               />
-            </div>
-            <div className={styles.listContainer}>
-              {countries
-                .filter(c => c.toLowerCase().includes(search.toLowerCase()))
-                .map(country => (
-                  <button
-                    key={country}
-                    className={styles.countryItem}
-                    onClick={() => {
-                      console.log('Selected:', country)
-                      setIsOpen(false)
-                    }}
-                  >
-                    {country}
-                  </button>
-                ))}
-            </div>
+            )}
           </div>
-        </>
-      )}
+
+          {/* Right Column */}
+          <div className={styles.rightCol}>
+            {view === 'global' ? (
+              // Main view → Modes on right (with full settings!)
+              <ModeSelector
+                mode={mode}
+                onChange={onModeChange}
+                quizFrequency={quizFrequency}
+onQuizFrequencyChange={setQuizFrequency}
+                quizStyle={quizStyle}
+                onQuizStyleChange={setQuizStyle}
+              />
+            ) : (
+              // Account view → Profile stuff
+              <div className={styles.accountSection}>
+                <div className={styles.avatar}>👤</div>
+                <div className={styles.accountHeader}>
+                  <div>
+                    <strong>Guest Explorer</strong>
+                    <br />
+                    <small>Level 12 • 8,420 pts</small>
+                  </div>
+                </div>
+                <button className={styles.signInBtn}>
+                  Sign in to save progress →
+                </button>
+                <div className={styles.footer}>
+                  <small>v1.0 • Made on Earth</small>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

@@ -122,12 +122,52 @@
   "keys": [
     { "text": "3",          "type": "number" },
     { "text": "11",          "type": "number" },
-    { "text": "+",          "type": "operator" },
-    { "text": "=",          "type": "equals" },
     { "text": "14",          "type": "result" }
   ],
   "tags": ["addition", "basics", "arithmetic", "dopamine-starter"],
   "weight": 0.5,
   "language": "en"
-}
+},
+{
+    "id": "math-subtraction-001",
+    "full": "The first cut is the deepest: 17 − 5 = 12. Subtraction is addition’s edgy twin and the gateway to negative numbers.",
+    "category": "Math > Basics > Subtraction",
+    "scenario": "become-math-god",
+    "keys": [
+      { "text": "17", "type": "number" },
+      { "text": "5",  "type": "number" },
+      { "text": "12", "type": "result" }
+    ],
+    "tags": ["subtraction", "basics", "arithmetic", "negative-ready"],
+    "weight": 0.5,
+    "language": "en"
+  },
+  {
+    "id": "math-multiplication-001",
+    "full": "The power move begins: 6 × 7 = 42. Multiplication is repeated addition on steroids — the first true scaler of quantity.",
+    "category": "Math > Basics > Multiplication",
+    "scenario": "become-math-god",
+    "keys": [
+      { "text": "6",  "type": "number" },
+      { "text": "7",  "type": "number" },
+      { "text": "42", "type": "result" }
+    ],
+    "tags": ["multiplication", "times-tables", "scaling", "dopamine-bomb"],
+    "weight": 0.6,
+    "language": "en"
+  },
+  {
+    "id": "math-division-001",
+    "full": "The great equalizer: 56 ÷ 8 = 7. Division is multiplication’s inverse and the birth of fractions and ratios.",
+    "category": "Math > Basics > Division",
+    "scenario": "become-math-god",
+    "keys": [
+      { "text": "56", "type": "number" },
+      { "text": "8",  "type": "number" },
+      { "text": "7",  "type": "result" }
+    ],
+    "tags": ["division", "inverse", "quotient", "ratio-starter"],
+    "weight": 0.7,
+    "language": "en"
+  }
 ]

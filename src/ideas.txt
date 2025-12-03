@@ -1,0 +1,6 @@
+What do you think about this idea:
+For some quizzes, let's say, to become better at just reading math equations, we have an equation like:
+Solve this equation:
+3x³ + 23x² - 17x + 3 / ( x - 5)
+Then, we have slide but horizontally (and not vertically like rest of app) with 3 different equations:
+A. blalblba <-slide-> B. blablla <-slide-> C. blbllab

@@ -1,0 +1,104 @@
+/* ModeSelector.module.css */
+.quizSettings {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.22, 1, 0.36, 1), padding 0.3s ease;
+  /* padding: 0 1rem; */
+  background: rgba(255, 215, 0, 0.08);
+  border-radius: 12px;
+  margin-top: 12px;
+}
+
+.quizSettings.expanded {
+  max-height: 500px;
+  padding: 1rem;
+  box-shadow: 0px 0px 8px #0c7900;
+}
+
+.settingLabel {
+  font-size: 1.1rem;
+  color: rgb(255, 231, 98);
+  /* margin: 0.8rem 0 0.4rem; */
+  font-weight: 600;
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+  text-align: center;
+}
+.settingLabel1 {
+  font-size: 1.1rem;
+  color: rgb(255, 231, 98);
+  margin-top: 10px;
+  font-weight: 600;
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+  text-align: center;
+}
+
+.radio {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 6px 0;
+  cursor: pointer;
+  font-size: 1rem;
+}
+.freqGrid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 10px;
+  margin-top: 8px;
+}
+.freqGrid1 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.freqBtn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid transparent;
+  padding: 10px;
+  border-radius: 12px;
+  font-weight: bold;
+  transition: all 0.2s;
+  box-shadow: 0px 0px 6px #0f0f0f;
+}
+
+.freqBtn.activeFreq {
+    background: green;
+    color: rgb(255, 231, 98);
+    border-color: darkgreen;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+}
+
+.collapseBtn {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+.modeWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modeBtn {
+  padding: 14px 16px;
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 12px;
+  color: white;
+  text-align: left;
+  font-size: 16px;
+  transition: all 0.25s;
+}
+
+.modeBtn:hover {
+  background: rgba(220,38,38,0.2);
+  border-color: #dc2626;
+}
+
+.modeBtn.active {
+  background: rgba(220,38,38,0.25) !important;
+  border-color: #dc2626 !important;
+  box-shadow: 0 0 12px rgba(220,38,38,0.3);
+}
