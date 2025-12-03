@@ -26,9 +26,17 @@ interface GlobeMenuProps {
   mode: 'chill' | 'quiz'
   onModeChange: (mode: 'chill' | 'quiz') => void
   onCountrySelect?: (country: string) => void
+quizAfterAmount: number
+  onQuizAfterAmountChange: (n: number) => void  // ← ADD THIS
 }
 
-export default function GlobeMenu({ mode, onModeChange, onCountrySelect }: GlobeMenuProps) {
+export default function GlobeMenu({
+  mode,
+  onModeChange,
+  onCountrySelect,
+  quizAfterAmount,
+  onQuizAfterAmountChange,
+}: GlobeMenuProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [view, setView] = useState<View>('global')
   const [countrySearch, setCountrySearch] = useState('')
@@ -37,7 +45,7 @@ export default function GlobeMenu({ mode, onModeChange, onCountrySelect }: Globe
   const inputRef = useRef<HTMLInputElement>(null)
 
   // Quiz Settings State
-const [quizFrequency, setQuizFrequency] = useState<number>(10)
+// const [quizFrequency, setQuizFrequency] = useState<number>(10)
   const [quizStyle, setQuizStyle] = useState<'normal' | 'lasvegas'>('normal')
 
   // Rolling placeholder
@@ -200,14 +208,14 @@ let timer: number
               </div>
             ) : (
               // In Account view → Modes move to left
-              <ModeSelector
-                mode={mode}
-                onChange={onModeChange}
-                quizFrequency={quizFrequency}
-onQuizFrequencyChange={setQuizFrequency}
-                quizStyle={quizStyle}
-                onQuizStyleChange={setQuizStyle}
-              />
+<ModeSelector
+  mode={mode}
+  onChange={onModeChange}
+  quizAfterAmount={quizAfterAmount}
+  onQuizAfterAmountChange={onQuizAfterAmountChange}  // ← FORWARD IT
+  quizStyle={quizStyle}
+  onQuizStyleChange={setQuizStyle}
+/>
             )}
           </div>
 
@@ -215,14 +223,14 @@ onQuizFrequencyChange={setQuizFrequency}
           <div className={styles.rightCol}>
             {view === 'global' ? (
               // Main view → Modes on right (with full settings!)
-              <ModeSelector
-                mode={mode}
-                onChange={onModeChange}
-                quizFrequency={quizFrequency}
-onQuizFrequencyChange={setQuizFrequency}
-                quizStyle={quizStyle}
-                onQuizStyleChange={setQuizStyle}
-              />
+<ModeSelector
+  mode={mode}
+  onChange={onModeChange}
+  quizAfterAmount={quizAfterAmount}
+  onQuizAfterAmountChange={onQuizAfterAmountChange}  // ← FORWARD IT
+  quizStyle={quizStyle}
+  onQuizStyleChange={setQuizStyle}
+/>
             ) : (
               // Account view → Profile stuff
               <div className={styles.accountSection}>

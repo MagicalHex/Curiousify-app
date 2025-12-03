@@ -31,7 +31,7 @@ export default function App() {
   const [quizIndex, setQuizIndex] = useState(0)             // ← Position inside quiz batch
   const [input, setInput] = useState('')
   const [showPrompt, setShowPrompt] = useState(false)
-  const [quizAfterAmount] = useState(5)                    // ← Could be setting later
+  const [quizAfterAmount, setQuizAfterAmount] = useState(5)                    // ← Could be setting later
   const [correctCount, setCorrectCount] = useState(0)
   const [showResults, setShowResults] = useState(false)
 
@@ -140,8 +140,10 @@ export default function App() {
           <GlobeMenu
         mode={mode}
         onModeChange={setMode}  // ← This fixes it! Now onChange is a function
-        onCountrySelect={handleCountrySelect}  // Optional, but hook it up
-      />
+        onCountrySelect={handleCountrySelect}  // Optional, but hook it up'
+quizAfterAmount={quizAfterAmount}
+  onQuizAfterAmountChange={setQuizAfterAmount}  // ← THIS IS THE CORRECT WAY
+/>
           <div className={styles.points}>
             {fireEmojis()} {points} pts
           </div>

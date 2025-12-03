@@ -5,8 +5,8 @@ import styles from './styles/ModeSelector.module.css'
 interface ModeSelectorProps {
   mode: 'chill' | 'quiz'
   onChange: (mode: 'chill' | 'quiz') => void
-  quizFrequency: number
-  onQuizFrequencyChange: (freq: number) => void
+  quizAfterAmount: number
+  onQuizAfterAmountChange: (n: number) => void
   quizStyle: 'normal' | 'lasvegas'
   onQuizStyleChange: (style: 'normal' | 'lasvegas') => void
   className?: string
@@ -15,10 +15,10 @@ interface ModeSelectorProps {
 const frequencies = [5, 10, 15, 20] as const
 
 export default function ModeSelector({
-  mode,
+mode,
   onChange,
-  quizFrequency,
-  onQuizFrequencyChange,
+  quizAfterAmount,
+  onQuizAfterAmountChange,
   quizStyle,
   onQuizStyleChange,
   className = '',
@@ -74,18 +74,20 @@ export default function ModeSelector({
 
         {/* FREQUENCY — unchanged */}
         <div className={styles.settingGroup}>
-          <p className={styles.settingLabel1}>Quiz me after:</p>
-          <div className={styles.freqGrid1}>
-            {frequencies.map(f => (
-              <button
-                key={f}
-                className={`${styles.freqBtn} ${quizFrequency === f ? styles.activeFreq : ''}`}
-                onClick={() => onQuizFrequencyChange(f)}
-              >
-                {quizFrequency === f && '✓'} {f}
-              </button>
-            ))}
-          </div>
+<label className={styles.settingLabel1}>
+  Quiz me after every <strong>{quizAfterAmount}</strong> facts
+</label>
+<div className={styles.freqGrid1}>
+  {frequencies.map(f => (
+    <button
+      key={f}
+      className={`${styles.freqBtn} ${quizAfterAmount === f ? styles.activeFreq : ''}`}
+      onClick={() => onQuizAfterAmountChange(f)}
+    >
+      {quizAfterAmount === f && '✓'} {f}
+    </button>
+  ))}
+</div>
         </div>
         
       </div>
