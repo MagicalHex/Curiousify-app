@@ -28,13 +28,30 @@
   width: 100%;
 }
 
+/* styles.points */
 .points {
-  font-size: 1.3rem;
-  font-weight: 800;
-  opacity: 0.9;
+  /* Position it in the bottom-right corner */
+  position: absolute;
+  bottom: 12px;      /* distance from bottom */
+  right: 16px;       /* distance from right – adjust to your padding */
+  
+  /* Keep the internal column layout (fire emojis on top, points below) */
   display: flex;
-  align-items: center;
-  gap: 0.6rem;
+  flex-direction: column;
+  align-items: flex-end;      /* ← this aligns children to the right */
+  
+  /* Typography */
+  line-height: 1.4;
+  font-size: 1.1rem;
+  font-weight: 800;
+  
+  /* Optional: small shadow so it pops over backgrounds */
+  text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+.streakpoints {
+  color: #ff4500;        /* classic Reddit-orange fire */
+  text-shadow: 0 0 8px #ff8800;
+  font-weight: 800;
 }
 
 /* This is the magic: wraps category + main, controls spacing */

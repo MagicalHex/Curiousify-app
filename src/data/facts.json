@@ -1,5 +1,106 @@
 [
   {
+    "id": "reading-stress-001",
+    "full": "Reading not only enhances knowledge but also significantly improves mental health and fosters empathy. Just a few minutes of reading lowers stress (up to 68%), more than walking or music.",
+    "source": "according to a University of Sussex study.",
+    "category": "Science > Psychology > Reading Benefits",
+    "scenario": "book",
+    "keys": [{ "text": "stress", "type": "word" }],
+    "tags": ["reading", "stress", "mental-health", "empathy", "dopamine"],
+    "weight": 1.0,
+    "language": "en"
+  },
+  {
+    "id": "alexandria-library-001",
+    "full": "The Library of Alexandria was the ancient world’s greatest knowledge hub. Built around 250 BCE in Alexandria, Egypt 🇪🇬, it once held over 400,000 scrolls - until Julius Caesar accidentally burned part of it in 48 BCE.",
+    "category": "History > Ancient World > Libraries",
+    "scenario": "scroll",
+    "keys": [{ "text": "Alexandria", "type": "word" }],
+    "tags": ["alexandria", "library", "ancient", "julius-caesar", "knowledge-lost"],
+    "weight": 1.0,
+    "language": "en"
+  },
+  {
+    "id": "lemon-tree-001",
+    "full": "Lemon trees (Citrus limon) belong to the same family as oranges and limes. They grow up to 6 meters tall, love warm climates 🌞, and pack vitamin C, fiber, B6, potassium, and magnesium — great for brain health.",
+    "category": "Nature > Plants > Citrus",
+    "scenario": "lemon",
+    "keys": [{ "text": "6 meters", "type": "measurement" }],
+    "tags": ["lemon", "citrus", "tree-height", "vitamins", "brain-health"],
+    "weight": 1.0,
+    "language": "en"
+  },
+  {
+    "id": "octopus-hearts-001",
+    "full": "Octopuses have three hearts ❤️. Two pump blood through the gills, while the third pumps it to the body. When they swim, the main heart actually stops - that’s why they prefer crawling.",
+    "category": "Animals > Marine Life > Octopus",
+    "scenario": "octopus",
+    "keys": [{ "text": "three", "type": "number" }],
+    "tags": ["octopus", "hearts", "marine-biology", "weird-nature"],
+    "weight": 1.0,
+    "language": "en"
+  },
+  {
+    "id": "honey-bees-001",
+    "full": "A single teaspoon of honey represents the life’s work of 12 bees. One bee makes just 1/12th of a teaspoon in her entire life. The average jar (500 g) requires around 2 million flower visits.",
+    "category": "Nature > Insects > Bees",
+    "scenario": "honey",
+    "keys": [{ "text": "12", "type": "number" }],
+    "tags": ["honey", "bees", "lifework", "sweet-facts"],
+    "weight": 1.0,
+    "language": "en"
+  },
+  {
+    "id": "eiffel-summer-001",
+    "full": "The Eiffel Tower grows up to 15 cm taller in summer. Heat makes the iron expand, so on hot days Paris’s icon literally stretches toward the sun.",
+    "category": "Engineering > Landmarks > Eiffel Tower",
+    "scenario": "eiffel-tower",
+    "keys": [{ "text": "15 cm", "type": "measurement" }],
+    "tags": ["eiffel-tower", "thermal-expansion", "paris", "summer"],
+    "weight": 1.0,
+    "language": "en"
+  },
+  {
+    "id": "brain-calories-001",
+    "full": "Your brain runs on just 20 watts of power, burns 20% of your daily calories and even though it’s only 2% of your body weight - that’s 300-400 calories just thinking and dreaming.",
+    "category": "Science > Biology > Brain",
+    "scenario": "brain",
+    "keys": [{ "text": "20", "type": "percentage" }],
+    "tags": ["brain", "calories", "energy", "thinking"],
+    "weight": 1.0,
+    "language": "en"
+  },
+  {
+    "id": "electric-cars-1900s-001",
+    "full": "Electric cars outsold gasoline cars in the early 1900s. In the 1920s both existed side-by-side, but gasoline won because it was cheaper and gas stations were everywhere.",
+    "category": "History > Technology > Cars",
+    "scenario": "electric-car",
+    "keys": [{ "text": "cheaper", "type": "word" }],
+    "tags": ["electric-car", "history", "gasoline", "1900s", "comeback"],
+    "weight": 1.0,
+    "language": "en"
+  },
+  {
+    "id": "jeans-origin-001",
+    "full": "Jeans were invented in 1873 for gold miners. Levi Strauss and Jacob Davis created the first blue jeans in San Francisco using tough denim and copper rivets so the pants wouldn’t rip.",
+    "category": "Fashion > History > Denim",
+    "scenario": "jeans",
+    "keys": [{ "text": "jeans", "type": "phrase" }],
+    "tags": ["jeans", "levi-strauss", "gold-rush", "1873", "fashion-origin"],
+    "weight": 1.0,
+    "language": "en"
+  },
+  {
+    "id": "human-sweat-001",
+    "full": "Humans are the only mammals that sweat through the forehead. We have millions of sweat glands all over the body and can run for hours without overheating - that’s why we could outrun almost any animal over long distances.",
+    "category": "Biology > Human Evolution > Thermoregulation",
+    "scenario": "running",
+    "keys": [{ "text": "forehead", "type": "word" }],
+    "tags": ["sweat", "human", "endurance-running", "evolution", "forehead"],
+    "weight": 1.0,
+    "language": "en"
+  },
+  {
   "id": "rocket-fuel-001",
   "full": "A fully fueled Falcon 9 rocket weighs about 549 tons at liftoff - but 85% of that mass (roughly 480 tons) is pure propellant. Only 4% is the actual spacecraft you see in space photos; the rest is just explosive gasoline to escape Earth’s hug (gravity).",
   "category": "Space > Rockets > Mass Budget",

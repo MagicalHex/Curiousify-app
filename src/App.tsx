@@ -187,9 +187,10 @@ const handleCountrySelect = (country: string) => {
 
   {/* Points – only visible in quiz mode + fire streak */}
   {userSettings.mode === 'quiz' && (
-    <div className={styles.points}>
-      {fireEmojis()} {points} pts
-    </div>
+<div className={styles.points}>
+  <div>{points} pts</div>
+<div className={styles.streakpoints}>{fireEmojis()}</div>
+</div>
   )}
 </div>
       </header>
