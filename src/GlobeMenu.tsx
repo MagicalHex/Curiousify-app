@@ -5,7 +5,7 @@ import { getFlagEmoji } from './utils/flags'
 import ModeSelector from './ModeSelector'
 
 const countries = [
-  'Germany', 'Poland', 'Sweden', 'Japan', 'Brazil', 'India', 'Australia',
+  'Global', 'Germany', 'Poland', 'Sweden', 'Japan', 'Brazil', 'India', 'Australia',
   'Canada', 'France', 'Italy', 'Spain', 'Mexico', 'South Korea', 'Netherlands',
   'Denmark', 'Norway', 'Finland', 'Belgium', 'Austria', 'Switzerland', 'USA'
 ]
@@ -25,17 +25,24 @@ type View = 'global' | 'account'
 interface GlobeMenuProps {
   mode: 'chill' | 'quiz'
   onModeChange: (mode: 'chill' | 'quiz') => void
-  onCountrySelect?: (country: string) => void
-quizAfterAmount: number
-  onQuizAfterAmountChange: (n: number) => void  // ← ADD THIS
+  selectedCountry: string           // ← string, not string | null
+  onCountrySelect: (country: string) => void
+  userSettings: {
+    quizStyle: 'minimalist' | 'lasvegas'
+    quizAfterAmount: number
+    mode: 'chill' | 'quiz'
+    selectedCountry: string        // ← also here
+  }
+  onSettingsChange: (settings: GlobeMenuProps['userSettings']) => void
 }
 
 export default function GlobeMenu({
   mode,
   onModeChange,
+  selectedCountry,
   onCountrySelect,
-  quizAfterAmount,
-  onQuizAfterAmountChange,
+  userSettings,
+  onSettingsChange,
 }: GlobeMenuProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [view, setView] = useState<View>('global')
@@ -43,10 +50,6 @@ export default function GlobeMenu({
   const [globalSearch, setGlobalSearch] = useState('')
   const [placeholder, setPlaceholder] = useState(goalPlaceholders[0])
   const inputRef = useRef<HTMLInputElement>(null)
-
-  // Quiz Settings State
-// const [quizFrequency, setQuizFrequency] = useState<number>(10)
-  const [quizStyle, setQuizStyle] = useState<'normal' | 'lasvegas'>('normal')
 
   // Rolling placeholder
   // Animated typing placeholder (one letter at a time)
@@ -125,13 +128,20 @@ let timer: number
 
   return (
     <div className={styles.container}>
-      <button
-        onClick={() => setIsOpen(v => !v)}
-        className={styles.globeBtn}
-        aria-label={isOpen ? 'Close menu' : 'Open menu'}
-      >
-        {isOpen ? '✕' : '🌍'}
-      </button>
+<button
+  onClick={() => setIsOpen(v => !v)}
+  className={styles.globeBtn}
+  aria-label={isOpen ? 'Close menu' : 'Change country'}
+>
+  {isOpen ? (
+    '✕'
+  ) : selectedCountry ? (
+    // Show flag for real countries, Global for global
+    getFlagEmoji(selectedCountry)
+  ) : (
+    'Global' // fallback
+  )}
+</button>
 
       {isOpen && <div className={styles.overlay} onClick={() => setIsOpen(false)} />}
 
@@ -157,18 +167,18 @@ let timer: number
             className={`${styles.tab} ${view === 'global' ? styles.activeTab : ''}`}
             onClick={() => setView('global')}
           >
-            Global
+            Global 🌍
           </button>
 
           <button className={`${styles.tab} ${styles.activeTab}`}>
-            Modes
+            Modes 🎚️
           </button>
 
           <button
             className={`${styles.tab} ${view === 'account' ? styles.activeTab : ''}`}
             onClick={() => setView('account')}
           >
-            Account
+            Account 📒
           </button>
         </div>
 
@@ -190,15 +200,17 @@ let timer: number
                     <p className={styles.noResult}>No countries found</p>
                   ) : (
                     filtered.map(country => (
-                      <button
-                        key={country}
-                        className={styles.countryBtn}
-                        onClick={() => {
-                          onCountrySelect?.(country)
-                          setIsOpen(false)
-                          setCountrySearch('')
-                        }}
-                      >
+<button
+    key={country}
+    className={`${styles.countryBtn} ${
+      selectedCountry === country ? styles.active : ''
+    }`}
+    onClick={() => {
+      onCountrySelect(country)        // ← updates userSettings.selectedCountry
+      setIsOpen(false)
+      setCountrySearch('')
+    }}
+  >
                         <span className={styles.flag}>{getFlagEmoji(country)}</span>
                         {country}
                       </button>
@@ -211,10 +223,14 @@ let timer: number
 <ModeSelector
   mode={mode}
   onChange={onModeChange}
-  quizAfterAmount={quizAfterAmount}
-  onQuizAfterAmountChange={onQuizAfterAmountChange}  // ← FORWARD IT
-  quizStyle={quizStyle}
-  onQuizStyleChange={setQuizStyle}
+  quizStyle={userSettings.quizStyle}
+  onQuizStyleChange={(style) => 
+    onSettingsChange({ ...userSettings, quizStyle: style })
+  }
+  quizAfterAmount={userSettings.quizAfterAmount}
+  onQuizAfterAmountChange={(amount) => 
+    onSettingsChange({ ...userSettings, quizAfterAmount: amount })
+  }
 />
             )}
           </div>
@@ -226,10 +242,14 @@ let timer: number
 <ModeSelector
   mode={mode}
   onChange={onModeChange}
-  quizAfterAmount={quizAfterAmount}
-  onQuizAfterAmountChange={onQuizAfterAmountChange}  // ← FORWARD IT
-  quizStyle={quizStyle}
-  onQuizStyleChange={setQuizStyle}
+  quizStyle={userSettings.quizStyle}
+  onQuizStyleChange={(style) => 
+    onSettingsChange({ ...userSettings, quizStyle: style })
+  }
+  quizAfterAmount={userSettings.quizAfterAmount}
+  onQuizAfterAmountChange={(amount) => 
+    onSettingsChange({ ...userSettings, quizAfterAmount: amount })
+  }
 />
             ) : (
               // Account view → Profile stuff

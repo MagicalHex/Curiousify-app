@@ -9,6 +9,7 @@ const countryCodeToEmoji = (code: string): string => {
 }
 
 const countryNameToCode: Record<string, string> = {
+  global: '',
   poland: 'PL',
   france: 'FR',
   japan: 'JP',
@@ -70,10 +71,22 @@ const countryNameToCode: Record<string, string> = {
 
 /** Convert a country name (as used in your facts) → flag emoji */
 export const getFlagEmoji = (countryName: string): string => {
-  if (!countryName) return ''
-  const key = countryName.toLowerCase().replace(/\s+/g, '')
-  const code = countryNameToCode[key as keyof typeof countryNameToCode]
-  return code ? countryCodeToEmoji(code) : ''
+  if (!countryName) return '🌍'
+
+  const normalized = countryName.toLowerCase().replace(/\s+/g, '')
+
+  // Special global keywords → force world emoji
+  if (['global'].includes(normalized)) {
+    return '🌍'
+  }
+
+  const code = countryNameToCode[normalized as keyof typeof countryNameToCode]
+  if (!code) {
+    console.warn(`No flag for: ${countryName}`)
+    return '🌍' // fallback to world if country not found
+  }
+
+  return countryCodeToEmoji(code)
 }
 
 /** Keep your old function for category-based facts */

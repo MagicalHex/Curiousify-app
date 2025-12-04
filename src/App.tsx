@@ -9,7 +9,7 @@ import SwipeHint from './SwipeHint'
 import { useSwipeable } from 'react-swipeable'
 import styles from './styles/App.module.css'
 import QuizResults from './QuizResults'
-import { getFlagFromCategory } from './utils/flags'
+import { getFlagFromCategory, getFlagEmoji } from './utils/flags'
 
 interface Fact {
   id: string
@@ -31,23 +31,48 @@ export default function App() {
   const [quizIndex, setQuizIndex] = useState(0)             // ← Position inside quiz batch
   const [input, setInput] = useState('')
   const [showPrompt, setShowPrompt] = useState(false)
-  const [quizAfterAmount, setQuizAfterAmount] = useState(5)                    // ← Could be setting later
+  // const [quizAfterAmount, setQuizAfterAmount] = useState(5)
   const [correctCount, setCorrectCount] = useState(0)
   const [showResults, setShowResults] = useState(false)
-
-  // DOPAMINE
+    // DOPAMINE
   const [points, setPoints] = useState(0)
   const [streak, setStreak] = useState(0)
   const [answerState, setAnswerState] = useState<'idle' | 'correct' | 'wrong'>('idle')
 
-  // Selections
-  const [mode, setMode] = useState<'chill' | 'quiz'>('chill')
-  const [selectedCountry, setSelectedCountry] = useState<string | null>(null)
-
-  const handleCountrySelect = (country: string) => {
-    setSelectedCountry(country)
-    console.log(`Selected: ${country}`)  // Or whatever logic you want
+const [userSettings, setUserSettings] = useState<{
+  quizStyle: 'minimalist' | 'lasvegas'
+  quizAfterAmount: number
+  mode: 'chill' | 'quiz'
+  selectedCountry: string   // ← NOT string | null anymore!
+}>({
+  quizStyle: 'minimalist',
+  quizAfterAmount: 5,
+  mode: 'chill',
+  selectedCountry: 'Global',  // ← now 100% valid
+})
+// In App.jsx – load on mount
+useEffect(() => {
+  const saved = localStorage.getItem('curiousify-settings')
+  if (saved) {
+    const parsed = JSON.parse(saved)
+    setUserSettings(parsed)
   }
+  // If no saved settings → we keep the default "Global" above
+}, [])
+
+// Save on change
+useEffect(() => {
+  localStorage.setItem('curiousify-settings', JSON.stringify(userSettings))
+}, [userSettings])
+
+  // Helper callbacks
+const handleModeChange = (newMode: 'chill' | 'quiz') => {
+  setUserSettings(prev => ({ ...prev, mode: newMode }))
+}
+const handleCountrySelect = (country: string) => {
+  setUserSettings(prev => ({ ...prev, selectedCountry: country }))
+  console.log(`Selected: ${country}`)
+}
 
   // Current fact logic
   const currentFact = quizMode
@@ -58,10 +83,10 @@ export default function App() {
 
   // Trigger quiz prompt when we hit the limit
   useEffect(() => {
-    if (!quizMode && viewedFacts.length === quizAfterAmount && viewedFacts.length > 0) {
+    if (!quizMode && viewedFacts.length === userSettings.quizAfterAmount && viewedFacts.length > 0) {
       setShowPrompt(true)
     }
-  }, [viewedFacts.length, quizMode, quizAfterAmount])
+  }, [viewedFacts.length, quizMode, userSettings.quizAfterAmount])
 
   const nextFact = () => {
     if (!currentFact) return
@@ -136,18 +161,37 @@ export default function App() {
   return (
     <div className={styles.app} {...handlers}>
       <header className={styles.header}>
-        <div className={styles.headerContent}>
-          <GlobeMenu
-        mode={mode}
-        onModeChange={setMode}  // ← This fixes it! Now onChange is a function
-        onCountrySelect={handleCountrySelect}  // Optional, but hook it up'
-quizAfterAmount={quizAfterAmount}
-  onQuizAfterAmountChange={setQuizAfterAmount}  // ← THIS IS THE CORRECT WAY
-/>
-          <div className={styles.points}>
-            {fireEmojis()} {points} pts
-          </div>
-        </div>
+<div className={styles.headerContent}>
+  <div className={styles.globeSection}>
+    <GlobeMenu
+      mode={userSettings.mode}
+      onModeChange={handleModeChange}
+      selectedCountry={userSettings.selectedCountry}
+      onCountrySelect={handleCountrySelect}
+      userSettings={userSettings}
+      onSettingsChange={setUserSettings}
+    />
+
+    {/* Selected Country Display – sleek & animated */}
+{userSettings.selectedCountry && (
+  <div 
+    className={styles.selectedCountryDisplay}
+    data-country={userSettings.selectedCountry}  // ← HERE!
+  >
+    <span className={styles.countryName}>
+      {userSettings.selectedCountry}
+    </span>
+  </div>
+)}
+  </div>
+
+  {/* Points – only visible in quiz mode + fire streak */}
+  {userSettings.mode === 'quiz' && (
+    <div className={styles.points}>
+      {fireEmojis()} {points} pts
+    </div>
+  )}
+</div>
       </header>
 
       <div className={styles.contentWrapper}>
@@ -179,7 +223,7 @@ quizAfterAmount={quizAfterAmount}
 
       {showPrompt && (
         <QuizPrompt
-          quizAfterAmount={quizAfterAmount}
+quizAfterAmount={userSettings.quizAfterAmount}
           onStartQuiz={startQuiz}
           onContinue={() => {
             setShowPrompt(false)
@@ -189,13 +233,13 @@ quizAfterAmount={quizAfterAmount}
         />
       )}
 
-      {!quizMode && <SwipeHint />}
+      {/* {!quizMode && <SwipeHint />} */}
       {!quizMode && <div onClick={nextFact} className={styles.clickOverlay} />}
 
       {showResults && (
         <QuizResults
           correct={correctCount}
-          total={quizAfterAmount}
+total={userSettings.quizAfterAmount}
           onClose={() => {
             setShowResults(false)
             setCorrectCount(0)

@@ -5,10 +5,10 @@ import styles from './styles/ModeSelector.module.css'
 interface ModeSelectorProps {
   mode: 'chill' | 'quiz'
   onChange: (mode: 'chill' | 'quiz') => void
+quizStyle: 'minimalist' | 'lasvegas'
+  onQuizStyleChange: (style: 'minimalist' | 'lasvegas') => void
   quizAfterAmount: number
   onQuizAfterAmountChange: (n: number) => void
-  quizStyle: 'normal' | 'lasvegas'
-  onQuizStyleChange: (style: 'normal' | 'lasvegas') => void
   className?: string
 }
 
@@ -58,10 +58,10 @@ mode,
           <p className={styles.settingLabel}>Quiz Style</p>
           <div className={styles.freqGrid}>
             <button
-              className={`${styles.freqBtn} ${quizStyle === 'normal' ? styles.activeFreq : ''}`}
-              onClick={() => onQuizStyleChange('normal')}
+              className={`${styles.freqBtn} ${quizStyle === 'minimalist' ? styles.activeFreq : ''}`}
+              onClick={() => onQuizStyleChange('minimalist')}
             >
-              {quizStyle === 'normal' && ''} Minimalist
+              {quizStyle === 'minimalist' && ''} Minimalist
             </button>
             <button
               className={`${styles.freqBtn} ${quizStyle === 'lasvegas' ? styles.activeFreq : ''}`}

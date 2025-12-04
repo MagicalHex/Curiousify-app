@@ -1,4 +1,37 @@
 [
+  {
+  "id": "rocket-fuel-001",
+  "full": "A fully fueled Falcon 9 rocket weighs about 549 tons at liftoff - but 85% of that mass (roughly 480 tons) is pure propellant. Only 4% is the actual spacecraft you see in space photos; the rest is just explosive gasoline to escape Earth’s hug (gravity).",
+  "category": "Space > Rockets > Mass Budget",
+  "scenario": "rocket-launch",
+  "keys": [
+    { "text": "85",         "type": "percentage" },
+    { "text": "4",           "type": "percentage" }
+  ],
+  "tags": ["rocket", "fuel", "mass-fraction", "tyranny-of-the-rocket-equation", "space-is-hard", "mind-blown"],
+  "weight": 1.0,
+  "language": "en"
+},
+{
+  "id": "falcon9-origin-001",
+  "full": "The Falcon 9 rocket is 70 meters tall (taller than a 22-story building), was developed in just 4.5 years by SpaceX - a private company founded by one guy who used to sell PayPal - and first flew successfully in 2010. By 2025 it has launched over 400 times, landing its booster 350+ times like it’s a reusable airplane. Humanity went from zero reusable rockets to vertical-landing skyscrapers in one lifetime.",
+  "category": "Space > Rockets > Falcon 9",
+  "scenario": "rocket-launch",
+  "keys": [
+    { "text": "70 meters",        "type": "height" },
+    { "text": "22-story building", "type": "comparison" },
+    { "text": "4.5 years",        "type": "development-time" },
+    { "text": "SpaceX",           "type": "company" },
+    { "text": "PayPal",           "type": "origin-meme" },
+    { "text": "2010",             "type": "first-flight" },
+    { "text": "400+",             "type": "launch-count" },
+    { "text": "350+",             "type": "landings" },
+    { "text": "reusable",         "type": "game-changer" }
+  ],
+  "tags": ["falcon9", "spacex", "elon", "reusable", "rapid-development", "insane-achievement", "future-is-now", "vertical-landing"],
+  "weight": 1.2,
+  "language": "en"
+},
 {
   "id": "island-sos-001",
   "full": "The first thing to do if stranded on a desert island is to write “HELP” or “SOS” in 10-meter letters using rocks, seaweed or by digging trenches. Visible from planes 20 km away.",
@@ -168,6 +201,22 @@
     ],
     "tags": ["division", "inverse", "quotient", "ratio-starter"],
     "weight": 0.7,
+    "language": "en"
+  },
+  {
+    "id": "rocket-fuel-002",
+    "full": "The Saturn V moon rocket weighed 2,950 tons on the pad — 85 % fuel, 10 % oxidizer, 5 % rocket. That means 2,800 tons of explosives just to throw 140 tons (the size of a small house) to the Moon. Tsiolkovsky was not kidding.",
+    "category": "Space > Rockets > Apollo Era",
+    "scenario": "rocket-launch",
+    "keys": [
+      { "text": "2,950 tons", "type": "mass-total" },
+      { "text": "2,800 tons",   "type": "mass-propellant" },
+      { "text": "140 tons",   "type": "mass-payload" },
+      { "text": "Saturn V",   "type": "rocket" },
+      { "text": "Moon",       "type": "destination" }
+    ],
+    "tags": ["saturn-v", "apollo", "rocket-equation", "crazy-numbers", "humanity-peak"],
+    "weight": 1.1,
     "language": "en"
   }
 ]

@@ -92,3 +92,35 @@
   .categoryTitle { font-size: 1rem; }
   .main { padding: 0 1rem 2.5rem; }
 }
+
+.selectedCountryDisplay {
+  text-align: center;
+}
+
+.countryName {
+  font-family: 'Dancing Script', cursive;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 0;
+  letter-spacing: 1px;
+  /* Soft vintage pastel gradient for normal countries */
+  background: linear-gradient(90deg, #d4a5a5, #e8c4a8, #d7e8c4, #a8d4e8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Global gets a classy antique silver → gold → ink look */
+.selectedCountryDisplay[data-country="Global"] .countryName {
+  background: linear-gradient(
+    90deg,
+    #3a3a3a,
+    #8b7355,   /* old gold */
+    #d4c4a8,
+    #ffffff,
+    #2d2d2d
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
