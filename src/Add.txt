@@ -36,3 +36,10 @@ x_{n+1} = r x_n (1 − x_n)
 Black–Scholes equation
 ∂V/∂t + (1/2) σ² S² ∂²V/∂S² + r S ∂V/∂S − r V = 0
 
+Swedish Tour:
+Alfred Nobel Dynamite
+Ingmar Kamprad IKEA
+Biggest lakes
+Biggest mountains
+
+Angles of "what you should know"

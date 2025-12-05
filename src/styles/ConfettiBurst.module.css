@@ -1,0 +1,7 @@
+/* styles/ConfettiBurst.module.css */
+.canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+}

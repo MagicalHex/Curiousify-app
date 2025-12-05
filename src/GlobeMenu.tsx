@@ -23,6 +23,8 @@ const goalPlaceholders = [
 type View = 'global' | 'account'
 
 interface GlobeMenuProps {
+  isOpen?: boolean
+  onToggle?: () => void
   mode: 'chill' | 'quiz'
   onModeChange: (mode: 'chill' | 'quiz') => void
   selectedCountry: string           // ← string, not string | null
@@ -37,6 +39,8 @@ interface GlobeMenuProps {
 }
 
 export default function GlobeMenu({
+isOpen: isOpenProp,        // ← renamed so we don’t shadow
+  onToggle,
   mode,
   onModeChange,
   selectedCountry,
@@ -44,12 +48,25 @@ export default function GlobeMenu({
   userSettings,
   onSettingsChange,
 }: GlobeMenuProps) {
-  const [isOpen, setIsOpen] = useState(false)
+  // const [isOpen, setIsOpen] = useState(false)
   const [view, setView] = useState<View>('global')
   const [countrySearch, setCountrySearch] = useState('')
   const [globalSearch, setGlobalSearch] = useState('')
   const [placeholder, setPlaceholder] = useState(goalPlaceholders[0])
   const inputRef = useRef<HTMLInputElement>(null)
+
+  // Controlled mode: use prop if provided, otherwise fall back to internal state
+  const [internalOpen, setInternalOpen] = useState(false)
+  
+  const isOpen = isOpenProp !== undefined ? isOpenProp : internalOpen
+  const setIsOpen = (value: boolean | ((prev: boolean) => boolean)) => {
+    if (onToggle) {
+      // Let parent decide the next value (they’ll usually do !prev)
+      onToggle()
+    } else {
+      setInternalOpen(value)
+    }
+  }
 
   // Rolling placeholder
   // Animated typing placeholder (one letter at a time)
@@ -116,12 +133,12 @@ let timer: number
   }, [isOpen])
 
   // Close on Escape
-  useEffect(() => {
+useEffect(() => {
     const esc = (e: KeyboardEvent) => e.key === 'Escape' && setIsOpen(false)
     if (isOpen) window.addEventListener('keydown', esc)
     return () => window.removeEventListener('keydown', esc)
-  }, [isOpen])
-
+  }, [isOpen]) // ← now works
+  
   const filtered = countries.filter(c =>
     c.toLowerCase().includes(countrySearch.toLowerCase())
   )
@@ -167,18 +184,18 @@ let timer: number
             className={`${styles.tab} ${view === 'global' ? styles.activeTab : ''}`}
             onClick={() => setView('global')}
           >
-            Global 🌍
+            🌍 Global
           </button>
 
           <button className={`${styles.tab} ${styles.activeTab}`}>
-            Modes 🎚️
+            🎚️ Modes
           </button>
 
           <button
             className={`${styles.tab} ${view === 'account' ? styles.activeTab : ''}`}
             onClick={() => setView('account')}
           >
-            Account 📒
+            📒 Account
           </button>
         </div>
 

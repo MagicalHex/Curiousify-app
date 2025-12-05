@@ -25,7 +25,8 @@ interface Fact {
 const facts: Fact[] = factsData as Fact[]
 
 export default function App() {
-  const [index, setIndex] = useState(0)                    // ← Global progress (never resets)
+  const [isGlobeMenuOpen, setIsGlobeMenuOpen] = useState(false)
+  const [index, setIndex] = useState(0)                    // ← Global progress (never resets), of fact slides
   const [viewedFacts, setViewedFacts] = useState<Fact[]>([]) // ← Current quiz batch
   const [quizMode, setQuizMode] = useState(false)
   const [quizIndex, setQuizIndex] = useState(0)             // ← Position inside quiz batch
@@ -38,6 +39,9 @@ export default function App() {
   const [points, setPoints] = useState(0)
   const [streak, setStreak] = useState(0)
   const [answerState, setAnswerState] = useState<'idle' | 'correct' | 'wrong'>('idle')
+  // Las vegas
+  const [showAffirmation, setShowAffirmation] = useState(false)
+const [showJackpot, setShowJackpot] = useState(false)
 
 const [userSettings, setUserSettings] = useState<{
   quizStyle: 'minimalist' | 'lasvegas'
@@ -81,12 +85,28 @@ const handleCountrySelect = (country: string) => {
 
   const flagEmoji = currentFact ? getFlagFromCategory(currentFact.category) : ''
 
-  // Trigger quiz prompt when we hit the limit
-  useEffect(() => {
-    if (!quizMode && viewedFacts.length === userSettings.quizAfterAmount && viewedFacts.length > 0) {
-      setShowPrompt(true)
-    }
-  }, [viewedFacts.length, quizMode, userSettings.quizAfterAmount])
+useEffect(() => {
+  // Only trigger quiz prompt if:
+  // 1. Mode is 'quiz'
+  // 2. quizAfterAmount is enabled (> 0)
+  // 3. We've hit exactly the threshold (or multiples)
+  // 4. Prompt isn't already showing
+  const shouldShowQuizPrompt =
+    userSettings.mode === 'quiz' &&
+    userSettings.quizAfterAmount > 0 &&
+    viewedFacts.length > 0 &&
+    viewedFacts.length % userSettings.quizAfterAmount === 0 &&
+    !showPrompt
+
+  if (shouldShowQuizPrompt) {
+    setShowPrompt(true)
+  }
+}, [
+  viewedFacts.length,
+  userSettings.mode,
+  userSettings.quizAfterAmount,
+  showPrompt
+])
 
   const nextFact = () => {
     if (!currentFact) return
@@ -162,7 +182,8 @@ const handleCountrySelect = (country: string) => {
     <div className={styles.app} {...handlers}>
       <header className={styles.header}>
 <div className={styles.headerContent}>
-  <div className={styles.globeSection}>
+  
+<div className={styles.globeSection}>
     <GlobeMenu
       mode={userSettings.mode}
       onModeChange={handleModeChange}
@@ -170,25 +191,24 @@ const handleCountrySelect = (country: string) => {
       onCountrySelect={handleCountrySelect}
       userSettings={userSettings}
       onSettingsChange={setUserSettings}
+      isOpen={isGlobeMenuOpen}
+      onToggle={() => setIsGlobeMenuOpen(v => !v)}
     />
 
-    {/* Selected Country Display – sleek & animated */}
-{userSettings.selectedCountry && (
-  <div 
-    className={styles.selectedCountryDisplay}
-    data-country={userSettings.selectedCountry}  // ← HERE!
-  >
-    <span className={styles.countryName}>
-      {userSettings.selectedCountry}
-    </span>
-  </div>
-)}
+    {/* Hide label when menu is open */}
+    {userSettings.selectedCountry && !isGlobeMenuOpen && (
+      <div className={styles.selectedCountryDisplay}>
+        <span className={styles.countryName}>
+          {userSettings.selectedCountry}
+        </span>
+      </div>
+    )}
   </div>
 
   {/* Points – only visible in quiz mode + fire streak */}
   {userSettings.mode === 'quiz' && (
-<div className={styles.points}>
-  <div>{points} pts</div>
+<div className={styles.pointswrapper}>
+  <div className={styles.points}>{points} pts</div>
 <div className={styles.streakpoints}>{fireEmojis()}</div>
 </div>
   )}
@@ -239,6 +259,7 @@ quizAfterAmount={userSettings.quizAfterAmount}
 
       {showResults && (
         <QuizResults
+        quizStyle={userSettings.quizStyle}
           correct={correctCount}
 total={userSettings.quizAfterAmount}
           onClose={() => {

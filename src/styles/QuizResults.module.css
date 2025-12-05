@@ -42,7 +42,8 @@ animation: fadeIn 0.4s ease-out;
 
 .closeButton {
   background: linear-gradient(90deg, #ff6b6b, #feca57);
-  color: #000;
+  color: white;
+  text-shadow: 0px 0px 3px black;
   font-weight: bold;
   padding: 1rem 2rem;
   border: none;
@@ -53,4 +54,108 @@ animation: fadeIn 0.4s ease-out;
 
 .closeButton:hover {
   transform: scale(1.05);
+}
+
+/* QuizResults.module.css */
+.perfect {
+  background: linear-gradient(90deg, #ffd700, #ff8c00, #ffd700);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from { filter: drop-shadow(0 0 20px gold); }
+  to { filter: drop-shadow(0 0 40px #ff4500); }
+}
+/* styles/QuizResults.module.css */
+
+.perfectTitle {
+  background: linear-gradient(90deg, #ffd700, #ff8c00, #ff2d95, #00ffea, #ffd700);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: jackpotGradient 4s ease infinite;
+}
+
+.jackpotPulse {
+  animation: 
+    jackpotPulse 1.8s ease-in-out infinite,
+    jackpotGradient 4s ease infinite;
+  transform-origin: center;
+  display: inline-block;
+}
+
+/* Exaggerated scale pulse: 1.0 → 1.5 → 1.0 */
+@keyframes jackpotPulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.5); }
+}
+
+/* Moving rainbow gradient */
+@keyframes jackpotGradient {
+   
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+/* Add this to your existing styles */
+.lasVegasButton {
+  color: white;
+  text-shadow: 0px 0px 4px black;
+  background: linear-gradient(90deg, #ffd700, #ff8c00, #ff2d95, #00ffea, #ffd700);
+  background-size: 300% 300%;
+  /* -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text; */
+  position: relative;
+  overflow: hidden;
+  animation: 
+    buttonBlink 1.5s ease-in-out infinite,
+    gradientShift 3s linear infinite;
+}
+
+/* Button flash like a casino sign */
+@keyframes buttonBlink {
+  0%, 100% { 
+    opacity: 1;
+    box-shadow: 0 0 5px #ff6b6b, 0 0 10px #feca57;
+    border: 1px solid green;
+  }
+  50% { 
+    opacity: 0.8;
+    box-shadow: 0 0 6px #ff6b6b, 0 0 10px #feca57, 0 0 15px rgba(255, 107, 107, 0.8);
+  }
+}
+
+/* Extra moving gradient under the text */
+.lasVegasButton::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.4) 50%,
+    transparent 70%
+  );
+  animation: shine 2.5s infinite;
+  pointer-events: none;
+}
+
+@keyframes shine {
+  0% { transform: translateX(-100%) translateY(-100%) rotate(30deg); }
+  100% { transform: translateX(100%) translateY(100%) rotate(30deg); }
+}
+
+/* Bonus: make the gradient on the button itself move too */
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }

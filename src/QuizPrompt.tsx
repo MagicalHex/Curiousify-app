@@ -12,9 +12,9 @@ export default function QuizPrompt({ quizAfterAmount, onStartQuiz, onContinue }:
     <div className={styles.overlay}>
       <div className={styles.content}>
         <h2 className={styles.title}>
-          You just learned {quizAfterAmount} facts! 🔥
+          You just learned {quizAfterAmount} facts!
         </h2>
-        <p className={styles.subtitle}>Ready to test yourself?</p>
+        {/* <p className={styles.subtitle}>Ready to test yourself?</p> */}
         <div className={styles.buttons}>
           <button onClick={onStartQuiz} className={styles.startButton}>
             Quiz me now 🎯

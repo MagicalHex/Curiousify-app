@@ -1,7 +1,7 @@
 [
   {
     "id": "reading-stress-001",
-    "full": "Reading not only enhances knowledge but also significantly improves mental health and fosters empathy. Just a few minutes of reading lowers stress (up to 68%), more than walking or music.",
+    "full": "Reading not only enhances knowledge but also significantly improves mental health and fosters empathy. Just a few minutes of reading lowers stress (up to 68%), more than walking or listening music.",
     "source": "according to a University of Sussex study.",
     "category": "Science > Psychology > Reading Benefits",
     "scenario": "book",
@@ -22,10 +22,10 @@
   },
   {
     "id": "lemon-tree-001",
-    "full": "Lemon trees (Citrus limon) belong to the same family as oranges and limes. They grow up to 6 meters tall, love warm climates 🌞, and pack vitamin C, fiber, B6, potassium, and magnesium — great for brain health.",
+    "full": "Lemon trees (Citrus limon) belong to the same family as oranges and limes. They grow up to 6 meters tall, love warm climates 🌞, and pack vitamin C, fiber, B6, potassium, and magnesium - great for brain health.",
     "category": "Nature > Plants > Citrus",
     "scenario": "lemon",
-    "keys": [{ "text": "6 meters", "type": "measurement" }],
+    "keys": [{ "text": "6", "type": "measurement" }],
     "tags": ["lemon", "citrus", "tree-height", "vitamins", "brain-health"],
     "weight": 1.0,
     "language": "en"
@@ -52,17 +52,17 @@
   },
   {
     "id": "eiffel-summer-001",
-    "full": "The Eiffel Tower grows up to 15 cm taller in summer. Heat makes the iron expand, so on hot days Paris’s icon literally stretches toward the sun.",
+    "full": "The Eiffel Tower, built 1887-1888 and 324-meter-tall (with antennas). Over 100 master designers competed with design and Gustave Eiffel won. It grows up to 15 cm taller in summer since heat makes the iron expand. On hot days, Paris’s famous tower literally stretches toward the sun.",
     "category": "Engineering > Landmarks > Eiffel Tower",
     "scenario": "eiffel-tower",
-    "keys": [{ "text": "15 cm", "type": "measurement" }],
+    "keys": [{ "text": "15", "type": "measurement" }],
     "tags": ["eiffel-tower", "thermal-expansion", "paris", "summer"],
     "weight": 1.0,
     "language": "en"
   },
   {
     "id": "brain-calories-001",
-    "full": "Your brain runs on just 20 watts of power, burns 20% of your daily calories and even though it’s only 2% of your body weight - that’s 300-400 calories just thinking and dreaming.",
+    "full": "Your brain runs on just 20 watts power, burns 20% of your daily calories, even though it’s only 2% of your body weight. The human brain uses about 300–400 calories per day just thinking, dreaming, and keeping you alive. It contains around 86 billion neurons and capable of processing information at incredible speeds, making it the most complex structure in the known universe.",
     "category": "Science > Biology > Brain",
     "scenario": "brain",
     "keys": [{ "text": "20", "type": "percentage" }],
@@ -125,8 +125,8 @@
     { "text": "SpaceX",           "type": "company" },
     { "text": "PayPal",           "type": "origin-meme" },
     { "text": "2010",             "type": "first-flight" },
-    { "text": "400+",             "type": "launch-count" },
-    { "text": "350+",             "type": "landings" },
+    { "text": "400",             "type": "launch-count" },
+    { "text": "350",             "type": "landings" },
     { "text": "reusable",         "type": "game-changer" }
   ],
   "tags": ["falcon9", "spacex", "elon", "reusable", "rapid-development", "insane-achievement", "future-is-now", "vertical-landing"],
@@ -212,7 +212,7 @@
   "category": "Languages > Polish > Phrases",
   "scenario": "become-polish",
   "keys": [
-    { "text": "Kocham cię", "type": "phrase" },
+    { "text": "I love you", "type": "phrase" },
     { "text": "koh-ham chyeh", "type": "pronunciation" }
   ],
   "tags": ["phrase", "romance", "polish", "love"],
